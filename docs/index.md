@@ -12,7 +12,7 @@ With SEOtools, you can:
 
 And more!
 
-## Installation
+## Installation 💻
 
 You can install SEOtools using pip:
 
@@ -20,7 +20,7 @@ You can install SEOtools using pip:
 pip install seotools
 ```
 
-## Quickstart
+## Quickstart 🚀
 
 ### Create a link graph
 
@@ -32,6 +32,12 @@ analyzer = Analyzer("https://jamesg.blog/sitemap.xml")
 analyzer.create_link_graph(10, 20)
 analyzer.compute_pagerank()
 analyzer.embed_headings()
+```
+
+### Get pagerank of a URL
+
+```python
+print(analyzer.pagerank["https://jamesg.blog"])
 ```
 
 ### Add relevant internal links to a web page
@@ -74,10 +80,36 @@ content = requests.get("https://jamesg.blog")
 print(page_contains_jsonld(content, "FAQPage"))
 ```
 
-## See Also
+### Get subfolders in a sitemap
+
+```python
+analyzer.get_subpaths()
+```
+
+### Get distance of URL from home page
+
+```python
+analyzer.get_distance_from_home_page("https://jamesg.blog/2023/01/01/")
+```
+
+### Retrieve keywords that appear more than N times on a web page
+
+```python
+from seotools import get_keywords
+import requests
+from bs4 import BeautifulSoup
+
+article = requests.get("https://jamesg.blog/...").text
+parsed_article = BeautifulSoup(article, "html.parser").get_text()
+
+# get keywords that appear more than 10 times
+keywords = get_keywords(parsed_article, 10)
+```
+
+## See Also 📚
 
 - [getsitemap](https://github.com/capjamesg/getsitemap): Retrieve URLs in a sitemap. ([Web interface](https://getsitemapurls.com))
 
-## License
+## License 📝
 
 This project is licensed under an [MIT license](https://github.com/capjamesg/SEOtools/blob/main/LICENSE).

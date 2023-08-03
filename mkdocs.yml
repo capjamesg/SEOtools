@@ -1,1 +1,42 @@
-site_name: SEOtools docs
+site_name: SEOtools
+site_url: https://capjamesg.github.io/seotools/
+site_author: capjamesg
+site_description: A set of utilities for SEOs and web developers with which to complete common tasks.
+repo_name: capjamesg/seotools
+repo_url: https://github.com/capjamesg/seotools
+edit_uri: https://github.com/capjamesg/seotools/tree/main/docs
+copyright: capjamesg 2023. All rights reserved.
+
+extra_css:
+  - styles/styles.css
+
+nav:
+  - Home: index.md
+  - Analyze Links: links.md
+  - Identify Broken Links: broken_links.md
+  - Build a Content Recommendation System: recommendation.md
+  - Check for JSON-LD on a Page: jsonld.md
+  - Reference:
+    - Analyzer: reference/analyzer.md
+  - Changelog: changelog.md
+
+theme:
+  name: 'material'
+  font:
+    text: Roboto
+    code: Roboto Mono
+
+plugins:
+  - mkdocstrings
+  - search
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - attr_list
+  - md_in_html
+  - pymdownx.tabbed:
+      alternate_style: true
+  - toc:
+      permalink: true
