@@ -1,3 +1,8 @@
+[![version](https://badge.fury.io/py/seotools.svg?)](https://badge.fury.io/py/seotools)
+[![downloads](https://img.shields.io/pypi/dm/seotools)](https://pypistats.org/packages/seotools)
+[![license](https://img.shields.io/pypi/l/seotools?)](https://github.com/capjamesg/seotools/blob/main/LICENSE)
+[![python-version](https://img.shields.io/pypi/pyversions/seotools)](https://badge.fury.io/py/mf2py)
+
 # SEOtools 🛠️
 
 A set of utilities for SEOs and web developers with which to complete common tasks.
