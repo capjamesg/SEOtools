@@ -4,7 +4,10 @@ from crawl_bot_validation import is_google_owned_resource
 import tqdm
 
 class CrawlLogAnalyzer:
-    def __init__(self, log_file_name, validators = []):
+    """
+    Analyze crawl logs to identify trends.
+    """
+    def __init__(self, log_file_name: str, validators: list[str] = []) -> None:
         self.log_file_name = log_file_name
         # header row is not present in the log file, but uses
         # the following format:
@@ -37,16 +40,52 @@ class CrawlLogAnalyzer:
 
         # get rid of the first column
 
-    def get_unique(self, col):
+    def get_unique(self, col: str) -> list:
+        """
+        Get the unique values in a column.
+
+        Args:
+            col (str): The column to analyze.
+
+        Returns:
+            list: A list of unique values in the column.
+
+        Example:
+            ```python
+            from seotools.logs import CrawLogAnalyzer
+
+            analyzer = CrawlLogAnalyzer("access.log")
+
+            analyzer.get_unique("request")
+            ```
+        """
         return self.log_file[col].unique()
     
-    def get_count(self, col):
+    def get_count(self, col: str) -> dict:
+        """
+        Count the number of times a value appears in a column.
+
+        Args:
+            col (str): The column to analyze.
+
+        Returns:
+            dict: A dictionary of values and the number of times they appear in the column.
+        """
         data =  self.log_file[col].value_counts().to_dict()
 
-        # return only path and count
         return {k: v for k, v in data.items() if k != '-'}
     
-    def crawl_frequency_by_url(self, url):
+    def crawl_frequency_by_url(self, url: str) -> int:
+        """
+        Find the number of times a URL has been crawled.
+
+        Args:
+            url (str): The URL to analyze.
+
+        Returns:
+            int: The number of times the URL was crawled.
+        """
+
         return self.log_file[self.log_file[0] == url].shape[0]
     
     def _get_avg_space_between_crawls(self, crawls_by_date, url):
@@ -71,10 +110,39 @@ class CrawlLogAnalyzer:
 
         return avg_diff, avg_daily_crawls
     
-    def get_top_urls(self, n = 10):
+    def get_top_urls(self, n: int = 10) -> dict:
+        """
+        Find the top n most crawled URLs.
+
+        Args:
+            n (int): The number of URLs to return.
+
+        Returns:
+            dict: A dictionary of URLs and the number of times they were crawled.
+        """
         return self.log_file['path'].value_counts().head(n).to_dict()
     
-    def crawl_frequency_aggregate(self, url = None, path = None):
+    def crawl_frequency_aggregate(self, url: str = None, path: str = None) -> dict:
+        """
+        Find the number of times a URL has been crawled by date.
+
+        Args:
+            url (str): The URL to analyze.
+            path (str): The path to analyze.
+
+        Returns:
+            dict: A dictionary of dates and the number of times the URL was crawled on that date.
+
+        Example:
+            ```python
+            from seotools.logs import CrawLogAnalyzer
+
+            analyzer = CrawlLogAnalyzer("access.log")
+
+            analyzer.crawl_frequency_aggregate(url="...")
+            ```
+        """
+
         crawls_by_date = {}
 
         if path:
@@ -103,12 +171,3 @@ class CrawlLogAnalyzer:
 
         return crawls_by_date, avg_diff, avg_daily_crawls
 
-data = CrawlLogAnalyzer('../access.log', validators="googlebot")
-
-# results = data.crawl_frequency_aggregate(path="/2023/03/03/send-trackback/")
-
-# print(results[2])
-
-results = data.get_top_urls(3)
-
-print(results)
