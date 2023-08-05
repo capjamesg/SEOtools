@@ -32,11 +32,9 @@ pip install seotools
 ```python
 from seotools.app import Analyzer
 
-analyzer = Analyzer("https://jamesg.blog/sitemap.xml")
-
-analyzer.create_link_graph(10, 20)
-analyzer.compute_pagerank()
-analyzer.embed_headings()
+# load from disk will load the link graph from disk if it has already been created
+# otherwise, a new link graph will be created
+analyzer = Analyzer("https://jamesg.blog/sitemap.xml", load_from_disk=True)
 ```
 
 ### Get pagerank of a URL
