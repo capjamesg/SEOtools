@@ -18,6 +18,8 @@ from pyld import jsonld
 from sklearn.manifold import TSNE
 from sklearn.metrics.pairwise import cosine_similarity
 
+USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko)"
+
 
 def get_keyword_counts(text):
     return Counter(text.split())
@@ -69,9 +71,7 @@ def get_page_urls(url):
     # use browser UA
     page = requests.get(
         url,
-        headers={
-            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko)"
-        },
+        headers={"User-Agent": USER_AGENT},
     )
     parsed_page = BeautifulSoup(page.text, "html.parser")
     # get all h1s, h2s
@@ -279,10 +279,27 @@ class Analyzer:
 
         normalized_pagerank = {}
 
-        for url, score in sorted_pagerank:
-            normalized_pagerank[url] = math.log(score * 100)
+        # score should be between 0 and 100
+        # 0 is lowest, 100 is highest
 
-        self.normalized_page_rank = normalized_pagerank
+        max_pagerank = max([value for _, value in sorted_pagerank])
+        min_pagerank = min([value for _, value in sorted_pagerank])
+
+        for url, score in sorted_pagerank:
+            normalized_pagerank[url] = math.floor(
+                100 * (score - min_pagerank) / (max_pagerank - min_pagerank)
+            )
+
+        print("Normalized pagerank")
+        print(normalized_pagerank)
+
+        # sort by normalized pagerank then save to file
+        sorted_pagerank = sorted(
+            normalized_pagerank.items(), key=lambda x: x[1], reverse=True
+        )
+
+        with open("normalized_pagerank.json", "w") as f:
+            json.dump(sorted_pagerank, f, indent=2)
 
         return sorted_pagerank
 
@@ -468,7 +485,7 @@ class Analyzer:
         return sentence_transformers.SentenceTransformer(
             "paraphrase-distilroberta-base-v1"
         )
-    
+
     def find_pages_with_under_n_links(self, n: int) -> list:
         """
         Find all pages with only one link.
@@ -476,10 +493,12 @@ class Analyzer:
         :return: A list of URLs.
         :rtype: list
         """
-        
-        results = [url for url in self.link_graph.nodes if self.link_graph.degree[url] < n]
+
+        results = [
+            url for url in self.link_graph.nodes if self.link_graph.degree[url] < n
+        ]
         results = sorted(results)
-        
+
         return results
 
     def _recommend(self, query: str) -> str:

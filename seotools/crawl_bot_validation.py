@@ -1,7 +1,4 @@
-import concurrent.futures
 import socket
-
-import requests
 
 GOOGLE_BOT_HOSTS = ["googlebot.com", "google.com", "googleusercontent.com"]
 
