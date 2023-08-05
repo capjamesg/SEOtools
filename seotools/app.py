@@ -28,7 +28,7 @@ def get_keywords(text, limit=10):
 def get_links_in_body(page):
     parsed_page = BeautifulSoup(page.text, "html.parser")
     # waterfall is article, main then body
-    # get all links in body
+    # get all links in body 
     options = ["article", "main", "body"]
 
     while options:
@@ -79,11 +79,21 @@ def get_page_urls(url):
 
 
 class Analyzer:
-    def __init__(self, url):
+    def __init__(self, url, max_workers=20, url_limit=None, load_from_disk=False):
         self.sitemap_url = url
         self.domain = urlparse(url).netloc
         self.model = None
-        self.reverse_link_graph = None
+        self.link_graph = None
+        self.page_rank = None
+        self.heading_embeddings = None
+        
+        if load_from_disk:
+            return
+
+        self.create_link_graph(max_workers, url_limit)
+        self.compute_pagerank()
+        self.embed_headings()
+        self.save()
 
     def get_subpaths(self) -> list:
         """
@@ -120,10 +130,6 @@ class Analyzer:
         # strip / from end of all URLs
         for key, value in sitemap_urls.items():
             sitemap_urls[key] = [url.strip("/") for url in value]
-
-        reverse_link_graph = nx.DiGraph()
-
-        self.reverse_link_graph = reverse_link_graph
 
         internal_link_count = {}
         heading_information = {}
@@ -178,11 +184,6 @@ class Analyzer:
                             ) + [url]
                             G.add_node(link["href"])
                             G.add_edge(url, link["href"])
-
-                            # reverse_link_graph.add_node(url)
-                            # reverse_link_graph.add_node(link["href"])
-
-                            # reverse_link_graph.add_edge(link["href"], url)
 
                 except Exception as e:
                     raise e
@@ -259,6 +260,35 @@ class Analyzer:
         if self.heading_information:
             with open("heading_information.json", "w") as f:
                 json.dump(self.heading_information, f, indent=2)
+
+    @staticmethod
+    def load(sitemap_url) -> "Analyzer":
+        """
+        Load the results of an analysis from disk.
+
+        :return: An Analyzer object.
+        :rtype: Analyzer
+        """
+        analyzer = Analyzer(sitemap_url, load_from_disk=True)
+
+        with open("pagerank.json", "r") as f:
+            analyzer.pagerank = json.load(f)
+
+        with open("link_graph.json", "r") as f:
+            link_graph_as_json = json.load(f)
+
+            analyzer.link_graph = nx.node_link_graph(link_graph_as_json)
+
+        with open("internal_link_count.json", "r") as f:
+            analyzer.internal_link_count = json.load(f)
+
+        with open("heading_information.json", "r") as f:
+            analyzer.heading_information = json.load(f)
+
+        print("Loaded pagerank, link graph, internal link count and heading information")
+        analyzer.embed_headings()
+
+        return analyzer
 
     def _get_distance_from_homepage(self, url: str) -> int:
         """
@@ -422,19 +452,24 @@ class Analyzer:
     def recommend_canonical(self, query):
         return self._recommend(query)[0][0]
 
-    def recommend_related_content(self, query, allowed_directories=None):
+    def recommend_related_content(self, query, allowed_directories=[]):
         allowed_directories = [i.lstrip("/") for i in allowed_directories]
 
         results = [url for url, _ in self._recommend(query)]
+
+        if len(allowed_directories):
+            rule = lambda url: re.match(
+                f"https://{self.domain}/({'|'.join(allowed_directories)})",
+                url,
+            )
+        else:
+            rule = lambda url: re.match(f"https://{self.domain}", url)
 
         if allowed_directories:
             results = [
                 url
                 for url in results
-                if re.match(
-                    f"https://{self.domain}/({'|'.join(allowed_directories)})",
-                    url,
-                )
+                if rule(url) and url not in allowed_directories
             ]
 
         return results
