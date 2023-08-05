@@ -2,32 +2,47 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://capjamesg.github.io/seotools/</loc>
-         <lastmod>2023-08-03</lastmod>
+         <lastmod>2023-08-05</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://capjamesg.github.io/seotools/broken_links/</loc>
-         <lastmod>2023-08-03</lastmod>
+         <lastmod>2023-08-05</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://capjamesg.github.io/seotools/changelog/</loc>
-         <lastmod>2023-08-03</lastmod>
+         <lastmod>2023-08-05</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://capjamesg.github.io/seotools/jsonld/</loc>
-         <lastmod>2023-08-03</lastmod>
+         <lastmod>2023-08-05</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://capjamesg.github.io/seotools/recommendation/</loc>
-         <lastmod>2023-08-03</lastmod>
+         <lastmod>2023-08-05</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://capjamesg.github.io/seotools/topic_clusters/</loc>
+         <lastmod>2023-08-05</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://capjamesg.github.io/seotools/helpers/validate_googlebot_ips/</loc>
+         <lastmod>2023-08-05</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://capjamesg.github.io/seotools/reference/analyzer/</loc>
-         <lastmod>2023-08-03</lastmod>
+         <lastmod>2023-08-05</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://capjamesg.github.io/seotools/reference/crawl_log_analyzer/</loc>
+         <lastmod>2023-08-05</lastmod>
          <changefreq>daily</changefreq>
     </url>
 </urlset>

@@ -12,20 +12,20 @@
         <meta name="author" content="capjamesg">
       
       
-        <link rel="canonical" href="https://capjamesg.github.io/seotools/broken_links/">
+        <link rel="canonical" href="https://capjamesg.github.io/seotools/topic_clusters/">
       
       
-        <link rel="prev" href="..">
+        <link rel="prev" href="../recommendation/">
       
       
-        <link rel="next" href="../recommendation/">
+        <link rel="next" href="../jsonld/">
       
       <link rel="icon" href="../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.15">
     
     
       
-        <title>Identify Broken Links - SEOtools</title>
+        <title>Visualize Content Clusters - SEOtools</title>
       
     
     
@@ -71,7 +71,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#identify-broken-links" class="md-skip">
+        <a href="#topic-clustering" class="md-skip">
           Skip to content
         </a>
       
@@ -106,7 +106,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Identify Broken Links
+              Visualize Content Clusters
             
           </span>
         </div>
@@ -244,59 +244,11 @@
 
   
   
-    
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          Identify Broken Links
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../broken_links/" class="md-nav__link">
         Identify Broken Links
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#find_broken_urls" class="md-nav__link">
-    find_broken_urls
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#seotools.links.broken.find_broken_urls" class="md-nav__link">
-    seotools.links.broken.find_broken_urls
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -322,11 +274,59 @@
 
   
   
+    
   
-    <li class="md-nav__item">
-      <a href="../topic_clusters/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Visualize Content Clusters
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         Visualize Content Clusters
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#get_topic_clusters" class="md-nav__link">
+    get_topic_clusters
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#seotools.topics.get_topic_clusters" class="md-nav__link">
+    seotools.topics.get_topic_clusters
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -451,15 +451,15 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#find_broken_urls" class="md-nav__link">
-    find_broken_urls
+  <a href="#get_topic_clusters" class="md-nav__link">
+    get_topic_clusters
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#seotools.links.broken.find_broken_urls" class="md-nav__link">
-    seotools.links.broken.find_broken_urls
+  <a href="#seotools.topics.get_topic_clusters" class="md-nav__link">
+    seotools.topics.get_topic_clusters
   </a>
   
 </li>
@@ -482,18 +482,21 @@
   
 
 
-<h1 id="identify-broken-links">Identify Broken Links<a class="headerlink" href="#identify-broken-links" title="Permanent link">&para;</a></h1>
-<p>You can identify broken links using the <code>find_broken_urls()</code> function.</p>
-<h2 id="find_broken_urls">find_broken_urls<a class="headerlink" href="#find_broken_urls" title="Permanent link">&para;</a></h2>
+<h1 id="topic-clustering">Topic Clustering<a class="headerlink" href="#topic-clustering" title="Permanent link">&para;</a></h1>
+<p>You can use the <code>get_topic_clusters</code> function to cluster the titles of all pages in a sitemap. This function can help you find similar groups of content on your site.</p>
+<p>This function generates a visualization of the clusters like this:</p>
+<p><img alt="Topic clusters" src="/seotools/embeddings.png" /></p>
+<p>You can hover over each link in the analysis generated by the <code>get_topic_clusters</code> function to see the URL of the page.</p>
+<h2 id="get_topic_clusters">get_topic_clusters<a class="headerlink" href="#get_topic_clusters" title="Permanent link">&para;</a></h2>
 
 
 <div class="doc doc-object doc-function">
 
 
-<a id="seotools.links.broken.find_broken_urls"></a>
+<a id="seotools.topics.get_topic_clusters"></a>
   <div class="doc doc-contents first">
   
-      <p>Find broken URLs.</p>
+      <p>Group content into the provided number of clusters.</p>
 
   <p><strong>Parameters:</strong></p>
   <table>
@@ -507,13 +510,13 @@
     </thead>
     <tbody>
         <tr>
-          <td><code>urls</code></td>
+          <td><code>topics</code></td>
           <td>
                 <code>list</code>
           </td>
           <td>
             <div class="doc-md-description">
-              <p>A list of URLs to check.</p>
+              <p>A list of topics to cluster.</p>
             </div>
           </td>
           <td>
@@ -521,17 +524,17 @@
           </td>
         </tr>
         <tr>
-          <td><code>timeout</code></td>
+          <td><code>n_clusters</code></td>
           <td>
                 <code>int</code>
           </td>
           <td>
             <div class="doc-md-description">
-              <p>The timeout in seconds. Defaults to 5.</p>
+              <p>The number of clusters to create.</p>
             </div>
           </td>
           <td>
-                <code>5</code>
+                <code>2</code>
           </td>
         </tr>
     </tbody>
@@ -547,12 +550,12 @@
     </thead>
     <tbody>
         <tr>
-<td><code>list</code></td>          <td>
-                <code>list</code>
+<td><code>dict</code></td>          <td>
+                <code>dict</code>
           </td>
           <td>
             <div class="doc-md-description">
-              <p>A list of broken URLs.</p>
+              <p>A dictionary of clusters.</p>
             </div>
           </td>
         </tr>
@@ -561,23 +564,16 @@
 
 <details class="example" open>
   <summary>Example</summary>
-  <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">seotools</span> <span class="kn">import</span> <span class="n">find_broken_urls</span>
+  <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">seotools.app</span> <span class="kn">import</span> <span class="n">Analyzer</span>
 
-<span class="n">urls_to_check</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s2">&quot;https://jamesg.blog/&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;https://jamesg.blog/test/</span>
-<span class="p">]</span>
+<span class="n">analyzer</span> <span class="o">=</span> <span class="n">Analyzer</span><span class="p">(</span><span class="s2">&quot;https://jamesg.blog/sitemap.xml&quot;</span><span class="p">,</span> <span class="n">load_from_disk</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-<span class="k">for</span> <span class="n">url</span> <span class="ow">in</span> <span class="n">urls_to_check</span><span class="p">:</span>
-    <span class="n">broken_urls</span> <span class="o">=</span> <span class="n">find_broken_urls</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Broken URLs identified on &quot;</span> <span class="o">+</span> <span class="n">url</span> <span class="o">+</span> <span class="s2">&quot;:&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">broken_urls</span><span class="p">)</span>
+<span class="n">analyzer</span><span class="o">.</span><span class="n">visualize_with_embeddings</span><span class="p">()</span>
 </code></pre></div>
 </details>
       <details class="quote">
-        <summary>Source code in <code>seotools/links/broken.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 6</span>
-<span class="normal"> 7</span>
+        <summary>Source code in <code>seotools/topics.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 7</span>
 <span class="normal"> 8</span>
 <span class="normal"> 9</span>
 <span class="normal">10</span>
@@ -618,53 +614,48 @@
 <span class="normal">45</span>
 <span class="normal">46</span>
 <span class="normal">47</span>
-<span class="normal">48</span>
-<span class="normal">49</span>
-<span class="normal">50</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">find_broken_urls</span><span class="p">(</span><span class="n">urls</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">timeout</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+<span class="normal">48</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_topic_clusters</span><span class="p">(</span><span class="n">topics</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">n_clusters</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Find broken URLs.</span>
+<span class="sd">    Group content into the provided number of clusters.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        urls (list): A list of URLs to check.</span>
-<span class="sd">        timeout (int, optional): The timeout in seconds. Defaults to 5.</span>
+<span class="sd">        topics (list): A list of topics to cluster.</span>
+<span class="sd">        n_clusters (int): The number of clusters to create.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        list: A list of broken URLs.</span>
+<span class="sd">        dict: A dictionary of clusters.</span>
 
 <span class="sd">    Example:</span>
 <span class="sd">        ```python</span>
-<span class="sd">        from seotools import find_broken_urls</span>
+<span class="sd">        from seotools.app import Analyzer</span>
 
-<span class="sd">        urls_to_check = [</span>
-<span class="sd">            &quot;https://jamesg.blog/&quot;,</span>
-<span class="sd">            &quot;https://jamesg.blog/test/</span>
-<span class="sd">        ]</span>
+<span class="sd">        analyzer = Analyzer(&quot;https://jamesg.blog/sitemap.xml&quot;, load_from_disk=True)</span>
 
-<span class="sd">        for url in urls_to_check:</span>
-<span class="sd">            broken_urls = find_broken_urls(url)</span>
-<span class="sd">            print(&quot;Broken URLs identified on &quot; + url + &quot;:&quot;)</span>
-<span class="sd">            print(broken_urls)</span>
+<span class="sd">        analyzer.visualize_with_embeddings()</span>
 <span class="sd">        ```</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">broken_urls</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">embeddings</span> <span class="o">=</span> <span class="p">{</span><span class="n">v</span><span class="p">:</span> <span class="n">model</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">topics</span><span class="p">}</span>
 
-    <span class="k">with</span> <span class="n">concurrent</span><span class="o">.</span><span class="n">futures</span><span class="o">.</span><span class="n">ThreadPoolExecutor</span><span class="p">(</span><span class="n">max_workers</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span> <span class="k">as</span> <span class="n">executor</span><span class="p">:</span>
-        <span class="n">future_to_url</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="n">executor</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span><span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">):</span> <span class="n">url</span> <span class="k">for</span> <span class="n">url</span> <span class="ow">in</span> <span class="n">urls</span>
-        <span class="p">}</span>
-        <span class="k">for</span> <span class="n">future</span> <span class="ow">in</span> <span class="n">concurrent</span><span class="o">.</span><span class="n">futures</span><span class="o">.</span><span class="n">as_completed</span><span class="p">(</span><span class="n">future_to_url</span><span class="p">):</span>
-            <span class="n">url</span> <span class="o">=</span> <span class="n">future_to_url</span><span class="p">[</span><span class="n">future</span><span class="p">]</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">embeddings</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
 
-            <span class="k">try</span><span class="p">:</span>
-                <span class="n">response</span> <span class="o">=</span> <span class="n">future</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
-                <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">!=</span> <span class="mi">200</span><span class="p">:</span>
-                    <span class="n">broken_urls</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="n">kmeans</span> <span class="o">=</span> <span class="n">cluster</span><span class="o">.</span><span class="n">KMeans</span><span class="p">(</span><span class="n">n_clusters</span><span class="o">=</span><span class="n">n_clusters</span><span class="p">)</span>
 
-            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
-                <span class="n">broken_urls</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
-                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2"> generated an exception: </span><span class="si">{</span><span class="n">exc</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">kmeans</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">broken_urls</span>
+    <span class="n">labels</span> <span class="o">=</span> <span class="n">kmeans</span><span class="o">.</span><span class="n">labels_</span>
+
+    <span class="n">clusters</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">label</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">labels</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">label</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">clusters</span><span class="p">:</span>
+            <span class="n">clusters</span><span class="p">[</span><span class="n">label</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="n">clusters</span><span class="p">[</span><span class="n">label</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">embeddings</span><span class="o">.</span><span class="n">keys</span><span class="p">())[</span><span class="n">i</span><span class="p">])</span>
+
+    <span class="c1"># transpose keys into str</span>
+    <span class="n">clusters</span> <span class="o">=</span> <span class="p">{</span><span class="nb">str</span><span class="p">(</span><span class="n">k</span><span class="p">):</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">clusters</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+
+    <span class="k">return</span> <span class="n">clusters</span>
 </code></pre></div></td></tr></table></div>
       </details>
   </div>
