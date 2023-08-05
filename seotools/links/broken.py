@@ -13,6 +13,21 @@ def find_broken_urls(urls: list, timeout: int = 5) -> list:
 
     Returns:
         list: A list of broken URLs.
+
+    Example:
+        ```python
+        from seotools import find_broken_urls
+
+        urls_to_check = [
+            "https://jamesg.blog/",
+            "https://jamesg.blog/test/
+        ]
+
+        for url in urls_to_check:
+            broken_urls = find_broken_urls(url)
+            print("Broken URLs identified on " + url + ":")
+            print(broken_urls)
+        ```
     """
     broken_urls = []
 

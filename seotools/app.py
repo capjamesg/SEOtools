@@ -1,5 +1,7 @@
 import concurrent.futures
 import json
+import math
+import os
 import re
 from collections import Counter
 from urllib.parse import urlparse
@@ -7,10 +9,13 @@ from urllib.parse import urlparse
 import getsitemap
 import indieweb_utils
 import networkx as nx
+import numpy as np
+import plotly.graph_objects as go
 import requests
 import sentence_transformers
 from bs4 import BeautifulSoup
 from pyld import jsonld
+from sklearn.manifold import TSNE
 from sklearn.metrics.pairwise import cosine_similarity
 
 
@@ -28,7 +33,7 @@ def get_keywords(text, limit=10):
 def get_links_in_body(page):
     parsed_page = BeautifulSoup(page.text, "html.parser")
     # waterfall is article, main then body
-    # get all links in body 
+    # get all links in body
     options = ["article", "main", "body"]
 
     while options:
@@ -74,8 +79,9 @@ def get_page_urls(url):
     # headings = [heading.text for heading in headings]
     # make headings all article text
     headings = [parsed_page.get_text()]
+    title = parsed_page.title.text
 
-    return parsed_page.find_all("a", href=True), url, headings
+    return parsed_page.find_all("a", href=True), url, headings, title
 
 
 class Analyzer:
@@ -85,9 +91,12 @@ class Analyzer:
         self.model = None
         self.link_graph = None
         self.page_rank = None
+        self.normalized_page_rank = None
         self.heading_embeddings = None
-        
-        if load_from_disk:
+        self.titles = {}
+
+        if load_from_disk and os.path.exists("pagerank.json"):
+            self.load()
             return
 
         self.create_link_graph(max_workers, url_limit)
@@ -129,7 +138,14 @@ class Analyzer:
 
         # strip / from end of all URLs
         for key, value in sitemap_urls.items():
-            sitemap_urls[key] = [url.strip("/") for url in value]
+            sitemap_urls[key] = []
+            for url in value:
+                path = urlparse(url).path
+                extension = path.split(".")[-1]
+                if extension in ("png", "jpg", "jpeg", "gif", "pdf"):
+                    continue
+
+                sitemap_urls[key].append(url)
 
         internal_link_count = {}
         heading_information = {}
@@ -155,8 +171,9 @@ class Analyzer:
                     if not result:
                         continue
 
-                    links, url, headings = result
+                    links, url, headings, title = result
                     heading_information[url] = headings
+                    self.titles[url] = title
 
                     for link in links:
                         # track all internal links
@@ -172,6 +189,11 @@ class Analyzer:
                         link["href"] = link["href"].split("#")[0]
                         link["href"] = link["href"].split("?")[0]
                         link["href"] = link["href"].strip("/")
+
+                        extension = link["href"].split(".")[-1]
+
+                        if extension in ["jpg", "png", "gif", "jpeg", "pdf"]:
+                            continue
 
                         if (
                             self.domain in link["href"]
@@ -201,13 +223,35 @@ class Analyzer:
             [len(value) for value in internal_link_count.values()]
         )
 
-        # calculate distance between homepage and https://jamesg.blog/category/coffee
+    def visualize_with_embeddings(self) -> None:
+        embeddings = self.heading_embeddings.values()
 
-        # distance = nx.shortest_path_length(
-        #     self.link_graph, "https://" + self.domain, "https://" + self.domain + "/category/coffee"
-        # )
-        # https://jamesg.blog/category/ -> https://jamesg.blog/category/coffee
-        # print(f"Distance: {distance}")
+        # convert to list
+        embeddings = list(embeddings)
+
+        # convert to numpy array
+        embeddings = np.array(embeddings)
+
+        # convert to 2d
+        embeddings = TSNE(n_components=2).fit_transform(embeddings)
+
+        # add labels
+        fig = go.Figure(
+            data=go.Scatter(
+                x=embeddings[:, 0],
+                y=embeddings[:, 1],
+                text=list(self.heading_embeddings.keys()),
+                mode="markers",
+                # use cluster color
+                marker=dict(
+                    size=16,
+                    colorscale="Viridis",
+                    showscale=True,
+                ),
+            )
+        )
+
+        fig.show()
 
     def remove_most_common_links(self):
         # used for removing navigation and footer links
@@ -231,7 +275,14 @@ class Analyzer:
 
         # order by pagerank in desc
         sorted_pagerank = sorted(pagerank.items(), key=lambda x: x[1], reverse=True)
-        self.pagerank = pagerank
+        self.page_rank = pagerank
+
+        normalized_pagerank = {}
+
+        for url, score in sorted_pagerank:
+            normalized_pagerank[url] = math.log(score * 100)
+
+        self.normalized_page_rank = normalized_pagerank
 
         return sorted_pagerank
 
@@ -240,9 +291,9 @@ class Analyzer:
         Save the results of an analysis to disk.
         """
 
-        if self.pagerank:
+        if self.page_rank:
             with open("pagerank.json", "w") as f:
-                json.dump(self.pagerank, f, indent=2)
+                json.dump(self.page_rank, f, indent=2)
 
         if self.link_graph:
             with open("link_graph.json", "w") as f:
@@ -261,34 +312,39 @@ class Analyzer:
             with open("heading_information.json", "w") as f:
                 json.dump(self.heading_information, f, indent=2)
 
-    @staticmethod
-    def load(sitemap_url) -> "Analyzer":
+        if self.titles:
+            with open("titles.json", "w") as f:
+                json.dump(self.titles, f, indent=2)
+
+    def load(self):
         """
         Load the results of an analysis from disk.
 
         :return: An Analyzer object.
         :rtype: Analyzer
         """
-        analyzer = Analyzer(sitemap_url, load_from_disk=True)
 
         with open("pagerank.json", "r") as f:
-            analyzer.pagerank = json.load(f)
+            self.pagerank = json.load(f)
 
         with open("link_graph.json", "r") as f:
             link_graph_as_json = json.load(f)
 
-            analyzer.link_graph = nx.node_link_graph(link_graph_as_json)
+            self.link_graph = nx.node_link_graph(link_graph_as_json)
 
         with open("internal_link_count.json", "r") as f:
-            analyzer.internal_link_count = json.load(f)
+            self.internal_link_count = json.load(f)
 
         with open("heading_information.json", "r") as f:
-            analyzer.heading_information = json.load(f)
+            self.heading_information = json.load(f)
 
-        print("Loaded pagerank, link graph, internal link count and heading information")
-        analyzer.embed_headings()
+        with open("titles.json", "r") as f:
+            self.titles = json.load(f)
 
-        return analyzer
+        print(
+            "Loaded pagerank, link graph, internal link count and heading information"
+        )
+        self.embed_headings()
 
     def _get_distance_from_homepage(self, url: str) -> int:
         """
@@ -303,16 +359,6 @@ class Analyzer:
         if not self.link_graph or url not in self.link_graph.nodes:
             return -1
 
-        # crawl from homepage to url
-
-        # visualize reverse link graph
-
-        # from matplotlib import pyplot as plt
-
-        # nx.draw(self.reverse_link_graph, with_labels=True)
-        # plt.show()
-
-        # get all paths from homepage to url
         if "https://" + self.domain not in self.link_graph.nodes:
             return -1
 
@@ -422,6 +468,19 @@ class Analyzer:
         return sentence_transformers.SentenceTransformer(
             "paraphrase-distilroberta-base-v1"
         )
+    
+    def find_pages_with_under_n_links(self, n: int) -> list:
+        """
+        Find all pages with only one link.
+
+        :return: A list of URLs.
+        :rtype: list
+        """
+        
+        results = [url for url in self.link_graph.nodes if self.link_graph.degree[url] < n]
+        results = sorted(results)
+        
+        return results
 
     def _recommend(self, query: str) -> str:
         """
@@ -467,9 +526,7 @@ class Analyzer:
 
         if allowed_directories:
             results = [
-                url
-                for url in results
-                if rule(url) and url not in allowed_directories
+                url for url in results if rule(url) and url not in allowed_directories
             ]
 
         return results
