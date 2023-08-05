@@ -15,9 +15,11 @@ nav:
   - Analyze Links: links.md
   - Identify Broken Links: broken_links.md
   - Build a Content Recommendation System: recommendation.md
+  - Visualize Content Clusters: topic_clusters.md
   - Check for JSON-LD on a Page: jsonld.md
   - Reference:
     - Analyzer: reference/analyzer.md
+    - CrawlLogAnalyzer: reference/crawl_log_analyzer.md
   - Changelog: changelog.md
 
 theme:
